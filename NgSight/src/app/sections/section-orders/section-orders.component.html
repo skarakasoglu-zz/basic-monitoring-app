@@ -1,0 +1,36 @@
+<div class="section-container">
+  <h2>
+    Latest Orders
+  </h2>
+  <table class="table table-inverse table-hover">
+    <thead class="thead-dark">
+      <tr>
+        <th>ID</th>
+        <th>Customer</th>
+        <th>Product</th>
+        <th>Amount</th>
+        <th>Order Placed</th>
+        <th>Order Completed</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of _apiService.orders | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+        <td>{{ order.id }}</td>
+        <td>{{ order.customer.name }}</td>  
+        <td>{{ order.product.name }}</td>
+        <td>{{ order.total }}</td>
+        <td>{{ order.placed | date: "dd/MM/yyyy" }}</td>
+        <td>
+          <ng-template *ngIf="order.completed; then completed else notcompleted"></ng-template>
+          <ng-template #completed>{{ order.completed | date: "dd/MM/yyyy" }}</ng-template>
+          <ng-template #notcompleted>Not Completed</ng-template>
+        </td>
+        <td>Status</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ngb-pagination class="d-flex justify-content-end" [(page)]="page" [pageSize]="pageSize"
+  [collectionSize]="_apiService.orders.length"></ngb-pagination>
